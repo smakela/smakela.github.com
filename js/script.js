@@ -42,39 +42,43 @@ $(document).ready(function() {
 											   
 				var t = $(this);
 				
-				navanchors.removeClass('active');
-				t.addClass('active');
-				var id = t.attr('href').substr(1);
-				
-				if(id != current){
-					$('#'+id).stop().css({
-							  top:10,
-							  opacity:0,
-							  'z-index':3
-							  }).show();
-					$('#'+current).stop().animate({
-							top:120,
-							opacity:0
-							},function(){$(this).hide();}).css('zIndex', '2');
-					$('#'+id).animate({
-							top:70,
-							opacity:1
-							});
-					current = id;
-					document.title = document.title.split(' - ')[0]+' - '+t.text();
-					location.href = '#!/'+current;
+				if  (t.attr('href').substr(0,1) == "#") {				
+					navanchors.removeClass('active');
+					t.addClass('active');
+					var id = t.attr('href').substr(1);
+					
+					if(id != current){
+						$('#'+id).stop().css({
+								  top:10,
+								  opacity:0,
+								  'z-index':3
+								  }).show();
+						$('#'+current).stop().animate({
+								top:120,
+								opacity:0
+								},function(){$(this).hide();}).css('zIndex', '2');
+						$('#'+id).animate({
+								top:70,
+								opacity:1
+								});
+						current = id;
+						document.title = document.title.split(' - ')[0]+' - '+t.text();
+						location.href = '#!/'+current;
+					}
+					
+					//saveing some CPU power ;)
+					if(id != 'home'){
+						//stop nivoslider if not at 'home'
+						nivoslider.data('nivoslider').stop();			
+					}else{
+						//or start if we are
+						nivoslider.data('nivoslider').start(); 
+					}
+					return false;
+				} else {
+					location.href = t.attr('href');
+					return false;
 				}
-				
-				//saveing some CPU power ;)
-				if(id != 'home'){
-					//stop nivoslider if not at 'home'
-					nivoslider.data('nivoslider').stop();			
-				}else{
-					//or start if we are
-					nivoslider.data('nivoslider').start(); 
-				}
-				return false;
-				
 			});
 			
 			if($('a[href=#'+current+']', '#nav').length){
